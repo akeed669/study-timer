@@ -10,48 +10,46 @@
       text-align: center;
       margin: 2rem;
     }
-    button {
+    button, input {
       margin: 0.5rem;
       padding: 0.6rem 1.2rem;
       font-size: 1rem;
     }
     #timeDisplay {
       font-size: 2rem;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎓 Study Timer</h1>
-  <p>Select a timer to begin:</p>
+  <h1>⏳ Study Timer</h1>
+  <p>Choose your focus time:</p>
 
   <button onclick="startTimer(30)">30 min</button>
   <button onclick="startTimer(60)">1 hour</button>
   <button onclick="startTimer(120)">2 hours</button>
   <br/>
-  <input type="number" id="customTime" placeholder="Minutes" min="1" />
-  <button onclick="startCustomTimer()">Custom</button>
+  <input type="number" id="customTime" placeholder="Custom (min)" min="1" />
+  <button onclick="startCustomTimer()">Start</button>
 
-  <div id="timeDisplay">Timer not started</div>
+  <div id="timeDisplay">No timer running</div>
 
-  <button onclick="pauseTimer()">⏸ Pause</button>
-  <button onclick="resumeTimer()">▶ Resume</button>
-  <br/><br/>
-  <button onclick="testNotification()">🔔 Test Notification</button>
+  <button onclick="pauseTimer()">Pause</button>
+  <button onclick="resumeTimer()">Resume</button>
 
   <script>
-    let timerDuration = 0; // in seconds
+    let timerDuration = 0;
     let timerRemaining = 0;
     let timerInterval = null;
     let lastMotivation = 0;
 
     const motivationalMessages = [
       "You're doing great! 💪",
-      "Keep it up, you're focused! 🎯",
-      "Breathe and stay present 🌿",
-      "You vs. You — you're winning 🧠",
-      "Small steps lead to big wins 🧱",
+      "Stay focused, you're crushing it! 💻",
+      "Remember your goals! 🎯",
+      "Breathe and keep going 🌿",
+      "Proud of you for showing up 🧠",
     ];
 
     function requestNotificationPermission() {
@@ -63,8 +61,6 @@
     function showNotification(message) {
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification(message);
-      } else {
-        console.log("Notification not shown:", message);
       }
     }
 
@@ -86,18 +82,15 @@
         timerRemaining--;
         updateDisplay();
 
-        const timeElapsed = timerDuration - timerRemaining;
-
-        // Show motivational notification every 15 minutes
-        if (timerRemaining > 0 && timeElapsed - lastMotivation >= 120) {
-          const msg = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-          showNotification(msg);
-          lastMotivation = timeElapsed;
+        const elapsed = timerDuration - timerRemaining;
+        if (timerRemaining > 0 && elapsed - lastMotivation >= 900) {
+          lastMotivation = elapsed;
+          showNotification(motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]);
         }
 
         if (timerRemaining <= 0) {
           clearInterval(timerInterval);
-          showNotification("🎉 Well done! You finished your session.");
+          showNotification("🎉 Time's up! Great job!");
           document.getElementById("timeDisplay").innerText = "✅ Session complete!";
         }
       }, 1000);
@@ -120,29 +113,18 @@
           timerRemaining--;
           updateDisplay();
 
-          const timeElapsed = timerDuration - timerRemaining;
-
-          if (timerRemaining > 0 && timeElapsed - lastMotivation >= 900) {
-            const msg = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-            showNotification(msg);
-            lastMotivation = timeElapsed;
+          const elapsed = timerDuration - timerRemaining;
+          if (timerRemaining > 0 && elapsed - lastMotivation >= 900) {
+            lastMotivation = elapsed;
+            showNotification(motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]);
           }
 
           if (timerRemaining <= 0) {
             clearInterval(timerInterval);
-            showNotification("🎉 Well done! You finished your session.");
+            showNotification("🎉 Time's up! Great job!");
             document.getElementById("timeDisplay").innerText = "✅ Session complete!";
           }
         }, 1000);
-      }
-    }
-
-    function testNotification() {
-      requestNotificationPermission();
-      if (Notification.permission === "granted") {
-        showNotification("🔔 This is a test notification!");
-      } else {
-        alert("Notification permission was not granted.");
       }
     }
   </script>

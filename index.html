@@ -83,7 +83,7 @@
         updateDisplay();
 
         const elapsed = timerDuration - timerRemaining;
-        if (timerRemaining > 0 && elapsed - lastMotivation >= 900) {
+        if (timerRemaining > 0 && elapsed - lastMotivation >= 120) {
           lastMotivation = elapsed;
           showNotification(motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]);
         }
@@ -114,7 +114,7 @@
           updateDisplay();
 
           const elapsed = timerDuration - timerRemaining;
-          if (timerRemaining > 0 && elapsed - lastMotivation >= 900) {
+          if (timerRemaining > 0 && elapsed - lastMotivation >= 120) {
             lastMotivation = elapsed;
             showNotification(motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]);
           }

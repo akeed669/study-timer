@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2ecc71">
-
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Study Timer</title>
   <style>
     body {
@@ -17,9 +10,7 @@
       text-align: center;
       margin: 2rem;
     }
-
-    button,
-    input {
+    button, input {
       margin: 0.5rem;
       padding: 0.6rem 1.2rem;
       font-size: 1rem;
@@ -27,35 +18,23 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
+  
     #pauseBtn.active {
-      background-color: #e74c3c;
-      /* red */
+      background-color: #e74c3c; /* red */
       color: white;
     }
-
+  
     #resumeBtn.active {
-      background-color: #2ecc71;
-      /* green */
+      background-color: #2ecc71; /* green */
       color: white;
     }
-
+  
     #timeDisplay {
       font-size: 2rem;
       margin-top: 1.5rem;
     }
   </style>
 </head>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service worker registered.'))
-      .catch(err => console.log('Service worker not registered.', err));
-  }
-</script>
-
-
 <body>
 
   <h1>⏳ Study Timer</h1>
@@ -64,18 +43,17 @@
   <button onclick="startTimer(30)">30 min</button>
   <button onclick="startTimer(60)">1 hour</button>
   <button onclick="startTimer(120)">2 hours</button>
-  <br />
+  <br/>
   <input type="number" id="customTime" placeholder="Custom (min)" min="1" />
   <button onclick="startCustomTimer()">Start</button>
 
   <div id="timeDisplay">No timer running</div>
 
   <button onclick="pauseTimer()" id="pauseBtn">Pause</button>
-  <button onclick="resumeTimer()" id="resumeBtn">Resume</button>
+  <button onclick="resumeTimer()" id="resumeBtn">Resume</button>  
 
   <!-- Sound assets -->
-  <audio id="motivationSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_78e8d0f15e.mp3"
-    preload="auto"></audio>
+  <audio id="motivationSound" src="https://cdn.pixabay.com/audio/2021/08/04/audio_78e8d0f15e.mp3" preload="auto"></audio>
   <audio id="endSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_539056b5f6.mp3" preload="auto"></audio>
 
   <script>
@@ -114,22 +92,22 @@
     function updateDisplay() {
       const minutes = Math.floor(timerRemaining / 60);
       const seconds = timerRemaining % 60;
-      document.getElementById("timeDisplay").innerText =
+      document.getElementById("timeDisplay").innerText = 
         `Time left: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }
 
     function startTimer(minutes) {
-      requestNotificationPermission();
-      clearInterval(timerInterval);
-      timerDuration = timerRemaining = minutes * 60;
-      lastMotivation = 0;
-      updateDisplay();
-      startInterval();
+  requestNotificationPermission();
+  clearInterval(timerInterval);
+  timerDuration = timerRemaining = minutes * 60;
+  lastMotivation = 0;
+  updateDisplay();
+  startInterval();
 
-      // Reset button styles
-      document.getElementById("pauseBtn").classList.remove("active");
-      document.getElementById("resumeBtn").classList.remove("active");
-    }
+  // Reset button styles
+  document.getElementById("pauseBtn").classList.remove("active");
+  document.getElementById("resumeBtn").classList.remove("active");
+}
 
     function startCustomTimer() {
       const minutes = parseInt(document.getElementById("customTime").value);
@@ -162,24 +140,23 @@
     }
 
     function pauseTimer() {
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        document.getElementById("pauseBtn").classList.add("active");
-        document.getElementById("resumeBtn").classList.remove("active");
-      }
-    }
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById("pauseBtn").classList.add("active");
+    document.getElementById("resumeBtn").classList.remove("active");
+  }
+}
 
-    function resumeTimer() {
-      if (!timerInterval && timerRemaining > 0) {
-        startInterval();
-        document.getElementById("resumeBtn").classList.add("active");
-        document.getElementById("pauseBtn").classList.remove("active");
-      }
-    }
+function resumeTimer() {
+  if (!timerInterval && timerRemaining > 0) {
+    startInterval();
+    document.getElementById("resumeBtn").classList.add("active");
+    document.getElementById("pauseBtn").classList.remove("active");
+  }
+}
 
   </script>
 
 </body>
-
 </html>
